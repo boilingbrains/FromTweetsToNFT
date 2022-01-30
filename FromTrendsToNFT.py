@@ -52,7 +52,8 @@ def get_user_id(username):
                 response.status_code, response.text
             )
         )
-    return response.json()
+    data = response.json()["data"][0]
+    return data["id"]
 
 def create_url(user_id):
     # Replace with user ID below
@@ -63,11 +64,12 @@ def create_url(user_id):
 
 
 def main():
-    #url = create_url()
-    #params = get_params()
-    #json_response = connect_to_endpoint(url, params)
-    #print(json.dumps(json_response, indent=4, sort_keys=True))
-    print(json.dumps(get_user_id("elonmusk"), indent=4, sort_keys=True))
+    user_id = get_user_id("elonmusk")
+    url = create_url(user_id)
+    params = get_params()
+    json_response = connect_to_endpoint(url, params)
+    print(json.dumps(json_response, indent=4, sort_keys=True))
+    
 
 
 if __name__ == "__main__":
