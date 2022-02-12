@@ -1,1 +1,1 @@
-# From Twitter Trends to NFTs
+# From Tweets to NFTs
