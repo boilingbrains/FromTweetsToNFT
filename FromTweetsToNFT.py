@@ -1,10 +1,11 @@
 import re
 import os
+import shutil
 import json
 import random
 import requests
-import logging 
-
+import logging
+from datetime import datetime
 # Retreive keys and tokens
 path = 'auth.txt'
 lines = []
@@ -74,22 +75,52 @@ def create_url(user_id):
 
 
 def main():
-    logging.basicConfig(filename='FromTweetsToNFT.log', encoding='utf-8', level=logging.INFO)
+    logfile = 'FromTweetsToNFT_{}.log'.format(str(datetime.now())[:10])
+    logging.basicConfig(filename=logfile,
+                        encoding='utf-8',
+                        level=logging.INFO, 
+                        format='%(asctime)s %(levelname)s %(message)s',
+                        datefmt='%H:%M:%S')
     #Retrieve tweets
-    user_id = get_user_id("elonmusk")
+    logging.info('Script launched:')
+    username = "elonmusk"
+    logging.info('Retrieve tweets of : {}'.format(username))
+    user_id = get_user_id(username)
     url = create_url(user_id)
     params = get_params()
     tweets = list(filter(None, connect_to_endpoint(url, params)))
     tweets = [item for item in tweets if len(item)< 100] #limit to avoid a too lon tweet
-    
-    choosed_tweet = tweets[random.randint(0,len(tweets)-1)]
+    logging.info('This is the results: {}'.format(tweets))
+    tweet_number = random.randint(0,len(tweets)-1)
+    choosed_tweet = tweets[tweet_number]
     print("The choosed tweet is:", choosed_tweet)
+    logging.info('The choosed tweet is: {}'.format(choosed_tweet))
     #print(json.dumps(tweets, indent=4, sort_keys=True))
-    #os.chdir(r"VQGAN-CLIP/")
+    dest_dir = os.path.join(os.getcwd(),'OUTPUT')
+    os.chdir(r"VQGAN-CLIP/") 
+    #os.system("conda activate vqgan")
     #print(os.getcwd())
-    #cmd = "conda run -n vqgan python generate.py -p  \"{}\" -o ../OUTPUT/tweet{}".format(choosed_tweet,)
-    #os.system(cmd)
+    samples = os.listdir(r"samples/")
+    samples = [s for s in samples if s[-3:]=="png" or s[-3:]=="jpg" ]
+    style_number = random.randint(0,len(samples)-1)
+    choosed_style = samples[style_number]
+    print("The choosed style is:", choosed_style[:-4])
+    logging.info('The choosed style is: {}'.format(choosed_style))
+    cmd = " python generate.py -p  \"{}\" -ii samples/{} ".format(choosed_tweet,choosed_style)
     
+    try:
+        os.system(cmd)
+        src_img = os.path.join(os.getcwd(), 'output.png')
+        dest_img = os.path.join(dest_dir,src_img)
+        shutil.copy(src_img,dest_dir)
+        new_dst_img_name = os.path.join(dest_dir, choosed_tweet+"_"+choosed_style[:-4]+".png")
+        os.rename(dest_img, new_dst_img_name)
+        logging.info('Image correctly generated and it is located here : {}'.format(new_dst_img_name))
+    except Exception as e:
+        logging.info('Something went wrong:', e)    
+        
+    logging.info('Script stopped')
+
 
 if __name__ == "__main__":
     main()
