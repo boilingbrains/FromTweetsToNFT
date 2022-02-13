@@ -85,48 +85,49 @@ def main():
     
     #Retrieve tweets
     logging.info('Script launched:')
-    username = "elonmusk"
+    ListUsernames = ["rihanna","elonmusk"]    
+    username = ListUsernames[random.randint(0,len(ListUsernames)-1)] 
     logging.info('Retrieve tweets of : {}'.format(username))
     UserId = get_user_id(username)
     url = create_url(UserId)
     params = get_params()
     tweets = list(filter(None, connect_to_endpoint(url, params)))
-    tweets = [item for item in tweets if len(item)< 100] #limit to avoid a too lon tweet
+    tweets = [item for item in tweets if len(item)< 150] #limit to avoid a too lon tweet
     logging.info('This is the results: {}'.format(tweets))
     #store tweets in a file a part
     TweetsFile = open('Tweets/{}/tweets_{}_{}.txt'.format(username,username,today),"w")
     TweetsList = map(lambda x:x+'\n', tweets)
     TweetsFile.writelines(TweetsList)
     TweetsFile.close()
-    # tweet_number = random.randint(0,len(tweets)-1)
-    # choosed_tweet = tweets[tweet_number]
-    # logging.info('The choosed tweet is: {}'.format(choosed_tweet))
-    # #print(json.dumps(tweets, indent=4, sort_keys=True))
+    tweet_number = random.randint(0,len(tweets)-1)
+    choosed_tweet = tweets[tweet_number]
+    logging.info('The choosed tweet is: {}'.format(choosed_tweet))
+    #print(json.dumps(tweets, indent=4, sort_keys=True))
     
-    # dest_dir = os.path.join(os.getcwd(),'OUTPUT')
-    # os.chdir(r"VQGAN-CLIP/") 
-    # #os.system("conda activate vqgan")
-    # #print(os.getcwd())
-    # samples = os.listdir(r"samples/")
-    # samples = [s for s in samples if s[-3:]=="png" or s[-3:]=="jpg" ]
-    # style_number = random.randint(0,len(samples)-1)
-    # choosed_style = samples[style_number]
-    # print("The choosed style is:", choosed_style[:-4])
-    # logging.info('The choosed style is: {}'.format(choosed_style))
-    # cmd = " python generate.py -p  \"{}\" -ii samples/{} ".format(choosed_tweet,choosed_style)
-    # #generate image
-    # try:
-    #     os.system(cmd)
-    #     src_img = os.path.join(os.getcwd(), 'output.png')
-    #     dest_img = os.path.join(dest_dir,src_img)
-    #     shutil.copy(src_img,dest_dir)
-    #     new_dst_img_name = os.path.join(dest_dir, choosed_tweet+"_"+choosed_style[:-4]+".png")
-    #     os.rename(dest_img, new_dst_img_name)
-    #     logging.info('Image correctly generated and it is located here : {}'.format(new_dst_img_name))
-    # except Exception as e:
-    #     logging.info('Something went wrong:', e)    
+    dest_dir = os.path.join(os.getcwd(),'OUTPUT')
+    os.chdir(r"VQGAN-CLIP/") 
+    #os.system("conda activate vqgan")
+    #print(os.getcwd())
+    samples = os.listdir(r"samples/")
+    samples = [s for s in samples if s[-3:]=="png" or s[-3:]=="jpg" ]
+    style_number = random.randint(0,len(samples)-1)
+    choosed_style = samples[style_number]
+    print("The choosed style is:", choosed_style[:-4])
+    logging.info('The choosed style is: {}'.format(choosed_style))
+    cmd = " python generate.py -p  \"{}\" -ii samples/{} ".format(choosed_tweet,choosed_style)
+    #generate image
+    try:
+        os.system(cmd)
+        src_img = os.path.join(os.getcwd(), 'output.png')
+        dest_img = os.path.join(dest_dir,src_img)
+        shutil.copy(src_img,dest_dir)
+        new_dst_img_name = os.path.join(dest_dir, choosed_tweet+"_"+choosed_style[:-4]+".png")
+        os.rename(dest_img, new_dst_img_name)
+        logging.info('Image correctly generated and it is located here : {}'.format(new_dst_img_name))
+    except Exception as e:
+        logging.info('Something went wrong:', e)    
         
-    # logging.info('Script stopped')
+    logging.info('Script stopped')
 
 
 if __name__ == "__main__":
