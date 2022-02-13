@@ -91,6 +91,8 @@ def main():
     tweets = list(filter(None, connect_to_endpoint(url, params)))
     tweets = [item for item in tweets if len(item)< 100] #limit to avoid a too lon tweet
     logging.info('This is the results: {}'.format(tweets))
+    #store tweets in a file a part
+    
     tweet_number = random.randint(0,len(tweets)-1)
     choosed_tweet = tweets[tweet_number]
     print("The choosed tweet is:", choosed_tweet)
@@ -107,7 +109,7 @@ def main():
     print("The choosed style is:", choosed_style[:-4])
     logging.info('The choosed style is: {}'.format(choosed_style))
     cmd = " python generate.py -p  \"{}\" -ii samples/{} ".format(choosed_tweet,choosed_style)
-    
+    #generate image
     try:
         os.system(cmd)
         src_img = os.path.join(os.getcwd(), 'output.png')
