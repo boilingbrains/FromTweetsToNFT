@@ -76,7 +76,7 @@ def create_url(user_id):
 
 def main():
     today = str(datetime.now())[:10]
-    logfile = 'FromTweetsToNFT_{}.log'.format(today)
+    logfile = 'logs/FromTweetsToNFT_{}.log'.format(today)
     logging.basicConfig(filename=logfile,
                         encoding='utf-8',
                         level=logging.INFO, 
@@ -95,7 +95,7 @@ def main():
     tweets = [item for item in tweets if len(item)< 150] #limit to avoid a too lon tweet
     logging.info('This is the results: {}'.format(tweets))
     #store tweets in a file a part
-    TweetsFile = open('Tweets/{}/tweets_{}_{}.txt'.format(username,username,today),"w")
+    TweetsFile = open('tweets/{}/tweets_{}_{}.txt'.format(username,username,today),"w")
     TweetsList = map(lambda x:x+'\n', tweets)
     TweetsFile.writelines(TweetsList)
     TweetsFile.close()
@@ -104,7 +104,7 @@ def main():
     logging.info('The choosed tweet is: {}'.format(choosed_tweet))
     #print(json.dumps(tweets, indent=4, sort_keys=True))
     
-    dest_dir = os.path.join(os.getcwd(),'OUTPUT')
+    dest_dir = os.path.join(os.getcwd(),'output')
     os.chdir(r"VQGAN-CLIP/") 
     #os.system("conda activate vqgan")
     #print(os.getcwd())
@@ -121,7 +121,7 @@ def main():
         src_img = os.path.join(os.getcwd(), 'output.png')
         dest_img = os.path.join(dest_dir,src_img)
         shutil.copy(src_img,dest_dir)
-        new_dst_img_name = os.path.join(dest_dir, choosed_tweet+"_"+choosed_style[:-4]+".png")
+        new_dst_img_name = os.path.join(dest_dir, username+"_"+choosed_tweet+"_"+choosed_style[:-4]+".png")
         os.rename(dest_img, new_dst_img_name)
         logging.info('Image correctly generated and it is located here : {}'.format(new_dst_img_name))
     except Exception as e:
