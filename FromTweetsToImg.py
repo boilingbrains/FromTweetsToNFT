@@ -86,7 +86,7 @@ def main():
     #Retrieve tweets
     logging.info('Script launched:')
     ListUsernames = ["rihanna","elonmusk"]    
-    username = ListUsernames[random.randint(0,len(ListUsernames)-1)] 
+    username = "rihanna" #ListUsernames[random.randint(0,len(ListUsernames)-1)] 
     logging.info('Retrieve tweets of : {}'.format(username))
     UserId = get_user_id(username)
     url = create_url(UserId)
@@ -106,7 +106,7 @@ def main():
     
     dest_dir = os.path.join(os.getcwd(),'output')
     os.chdir(r"VQGAN-CLIP/") 
-    #os.system("conda activate vqgan")
+    os.system("conda activate vqgan")
     #print(os.getcwd())
     samples = os.listdir(r"samples/")
     samples = [s for s in samples if s[-3:]=="png" or s[-3:]=="jpg" ]
