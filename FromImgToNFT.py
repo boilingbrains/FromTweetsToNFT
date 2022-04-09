@@ -1,9 +1,17 @@
+#############
+## MODULES ##
+#############
+
 import os
 import json
 import requests
 import http.client
 import time
 from distutils.command.upload import upload
+
+###############
+## FUNCTIONS ##
+###############
 
 def selec_data(listNFT):
     celebrities = []
@@ -57,8 +65,6 @@ def get_contract_addres(trxhash,api):
     print("NFT contract:",NFTcontract)
     return NFTcontract
 
-
-
 def upload_metadata(api, celebrity, tweet, style, ipfsurl):
     print("\nTry to upload the metadata file:")
     conn = http.client.HTTPSConnection("api.nftport.xyz")
@@ -90,7 +96,6 @@ def mint_the_nft(api,NFTcontract,metadatauri):
     print(data)
     return 
 
-
 def main():
     apifile = open('nftportaut.txt',"r")
     api = apifile.read()[4:]
@@ -100,16 +105,16 @@ def main():
     ipfsurls = []
     for nft in listNFT:
       ipfsurls.append(upload_file(nft,api))
-    ipfsurl = upload_file(listNFT[0],api)
+    #ipfsurl = upload_file(listNFT[0],api)
     listNFT = [nft[:-4] for nft in listNFT]
     celebrities, tweets, styles = selec_data(listNFT) 
     #trxhash = create_smart_contract(api)
-    trxhash = "0x5a9afcb5b1e23314db4169fef94a22253a0ebfd63ec08d90b2f913e60e1054c3"
+    trxhash = "0x5a9afcb5b1e23314db4169fef94a22253a0ebfd63ec08d90b2f913e60e1054c3" #This is a trxHash from a smart contract already created
     NFTcontract = get_contract_addres(trxhash,api)
     #metadatauri = upload_metadata(api, celebrities[0], tweets[0], styles[0], ipfsurl)
     #mint_the_nft(api,NFTcontract,metadatauri)
-    for i in range(len(listNFT)):
-        metadatauri = upload_metadata(api, celebrities[i], tweets[i], styles[i], ipfsurls[i])
-        mint_the_nft(api,NFTcontract,metadatauri)
+    # for i in range(len(listNFT)):
+    #     metadatauri = upload_metadata(api, celebrities[i], tweets[i], styles[i], ipfsurls[i])
+    #     mint_the_nft(api,NFTcontract,metadatauri)
 if __name__ == "__main__":
     main()
