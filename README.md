@@ -14,7 +14,6 @@ Ce projet consiste à génerer une image à partir des tweets d'une célébrité
 |   📜FromImgToNFT.py
 └───📂output
     └───🖼️...
-└───📂logs
 └───📂VQGAN-CLIP
 ```
 ## Explications:
