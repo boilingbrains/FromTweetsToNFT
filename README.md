@@ -21,6 +21,6 @@ Ce projet consiste à génerer une image à partir des tweets d'une célébrité
 
 <span style="display:block;text-align:center">
 
-[![miniature.JPG](#center)](https://www.youtube.com/watch?v=4QC_Pp04vP4)
+[![](miniature.JPG#center)](https://www.youtube.com/watch?v=4QC_Pp04vP4)
 
 </span>
